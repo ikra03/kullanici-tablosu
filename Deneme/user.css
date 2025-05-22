@@ -12,7 +12,7 @@ td {
   border: 1px solid #aebeb8;
 }
 th {
-  background-color: #8cd1af;
+  background-color: #5e7cd3;
 }
 h1 {
   text-align: center;
@@ -40,41 +40,63 @@ table {
   overflow: hidden;
 }
 
-.action-btn {
-  padding: 6px 12px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-right: 5px;
+#userTable th:last-child,
+#userTable td:last-child {
+  width: 150px;
 
-  font-size: 14px;
+  min-width: 250px;
+  max-width: 300px;
+  text-align: center;
 }
 
-.edit-btn {
-  background-color: #5971dc;
-  color: white;
-}
-
-.edit-btn:hover {
-  background-color: #594cb5;
-}
-
-.delete-btn {
-  background-color: #e5463a;
-  color: white;
-}
-
-.delete-btn:hover {
-  background-color: #d32f2f;
-}
-
-.action-cell {
+.aksiyonlar {
   justify-content: center;
   display: flex;
 }
 
+.action-btn {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 5px;
+  font-size: 14px;
+}
+.action-btn:hover {
+  background-color: rgb(181, 178, 178);
+}
+
+.edit-btn {
+  background-color: #2174c7;
+  color: white;
+}
+
+.edit-btn:hover {
+  background-color: #5645d7;
+}
+
+.delete-btn {
+  background-color: #e33e3e;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #c91a1a;
+}
+.noteText-btn {
+  background-color: rgb(161, 226, 31);
+}
+.noteText-btn:hover {
+  background-color: yellowgreen;
+}
+.showNote-btn {
+  background-color: rgb(161, 226, 31);
+}
+.showNote-btn:hover {
+  background-color: yellowgreen;
+}
 .modal-header {
-  background-color: rgb(148, 220, 177);
+  background-color: #3475aa;
 }
 
 .modal-body {
@@ -82,31 +104,830 @@ table {
 }
 
 .modal-footer {
-  background-color: rgb(148, 220, 177);
+  background-color: #3475aa;
 }
 .btn-secondary {
   color: #fff;
   background-color: #f31e32;
   border-color: #d52424;
 }
-
 .pagination-container {
   display: flex;
   justify-content: center;
-  margin-top: 15px;
-  gap: 5px;
+  align-items: center;
+  margin-top: 20px;
+  gap: 8px;
+}
+
+.pagination-container button {
+  padding: 8px 14px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  background-color: #b9bdcb;
+  color: #ffffff;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#pagination {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination-wrapper {
+  display: contents;
+}
+
+.pagination-left {
+  grid-column: 1;
+  justify-self: start;
+}
+
+.pagination-center {
+  grid-column: 2;
+  justify-self: center;
+  display: flex;
+  gap: 6px;
+}
+
+.pagination-right {
+  grid-column: 3;
+  justify-self: end;
+}
+
+.page-numbers-wrapper {
+  margin: 0 5px;
+}
+
+.star {
+  font-size: 30px;
+  color: gray;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.star.active {
+  color: gold;
+}
+#favoriToggleBtn {
+  background-color: rgb(234, 229, 212);
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+#favoriToggleBtn:hover {
+  background-color: rgb(201, 199, 184);
+}
+
+.note-timestamp {
+  position: absolute;
+  bottom: 8px;
+  text-align: right;
+  color: #888;
+  background: #f0f8f5;
+}
+.modal .form-control {
+  width: 100% !important;
+  box-sizing: border-box;
+  display: block;
+}
+#kisiekle {
+  background-color: rgb(220, 212, 234);
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+#kisiekle:hover {
+  background-color: rgb(188, 187, 195);
+}
+/* Not kutusu */
+.notes-container {
+  background: #eafaf6;
+  min-height: 400px;
+  padding: 24px 12px 60px 12px;
+  border-radius: 10px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.note-box {
+  background: #c9dce8;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  position: relative;
+}
+
+.note-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95em;
+  margin-bottom: 6px;
+}
+
+.note-date {
+  color: #6c757d;
+  font-size: 0.95em;
+}
+
+.note-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.note-actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1em;
+}
+
+.add-note-btn {
+  width: 100%;
+  background: linear-gradient(90deg, #2196f3, #0d47a1);
+  color: #ffffff;
+  border: none;
+  border-radius: 20px;
+  padding: 12px 0;
+  font-size: 1.1em;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  transition: background 0.2s;
+}
+
+.add-note-btn:hover {
+  background: linear-gradient(90deg, #2196f3, #0d47a1);
+}
+
+#noteInputArea {
+  margin-top: 10px;
 }
 
 .pagination-btn {
-  padding: 5px 10px;
-  border: 1px solid #ccc;
-  background-color: #eee;
+  padding: 8px 14px;
+  font-size: 16px;
+  border: 1px solid #062137;
+  background-color: #698195;
+  color: #3f3b3b;
+  border-radius: 6px;
   cursor: pointer;
-  border-radius: 5px;
+  transition: all 0.3s;
+}
+.pagination-btn.active-page {
+  background-color: #2174c7;
+  color: #fff;
+  border: 2px solid #6c6f75;
 }
 
-.pagination-btn.active {
-  background-color: #3085d6;
-  color: white;
+.action-modal-content {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(100, 100, 200, 0.15);
+}
+.action-modal-header {
+  background: #aeb3e6;
+  color: #222;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+.action-modal-body {
+  background: #f0f8f5;
+  padding: 32px 16px 24px 16px;
+}
+.action-modal-btn {
+  width: 80%;
+  background: linear-gradient(90deg, #2196f3, #0d47a1);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 14px 0;
+  font-size: 1.1em;
+  margin-bottom: 12px;
+  transition: background 0.2s;
   font-weight: bold;
+}
+.action-modal-btn:hover {
+  background: linear-gradient(90deg, #2196f3, #0d47a1);
+}
+.action-modal-footer {
+  background: linear-gradient(90deg, #2980b9 0%, #6dd5fa 100%);
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  border-top: none;
+  padding: 16px 24px;
+}
+
+.gradient-text {
+  font-weight: bold;
+  font-size: 3rem;
+  background: linear-gradient(90deg, #2196f3 0%, #1976d2 60%, #0d47a1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: 1px;
+}
+
+/* Modern modal başlığı ve butonları */
+.modal-content {
+  border-radius: 16px;
+  border: none;
+  box-shadow: 0 8px 32px rgba(41, 128, 185, 0.15);
+  background: #fafdff;
+}
+
+.modal-header {
+  background: linear-gradient(90deg, #2980b9 0%, #6dd5fa 100%);
+  color: #fff;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  border-bottom: none;
+}
+
+.modal-title {
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.modal-footer {
+  background: linear-gradient(90deg, #36a2e0 0%, #1565c0 100%);
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  border-top: none;
+  padding: 16px 24px;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg, #2980b9 0%, #6dd5fa 100%);
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(90deg, #2574a9 0%, #48c6ef 100%);
+}
+
+.btn-secondary {
+  background: #fff;
+  color: #1565c0;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  transition: background 0.3s, color 0.3s;
+}
+
+.btn-secondary:hover {
+  background: #e3f0fa;
+  color: #0d47a1;
+}
+
+.form-control:focus {
+  border-color: #2980b9;
+  box-shadow: 0 0 0 2px #6dd5fa55;
+}
+
+#userTable thead tr th {
+  background: #2174c7; /* Firma Bilgileri başlığındaki mavi ile aynı */
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.08rem;
+  letter-spacing: 0.5px;
+  border: none;
+  text-align: center;
+}
+
+#userTable thead tr th:first-child {
+  border-top-left-radius: 10px;
+}
+#userTable thead tr th:last-child {
+  border-top-right-radius: 10px;
+}
+/* Dosya Yükleme Alanı Stilleri */
+.file-upload-container {
+  padding: 20px;
+}
+
+.file-upload-area {
+  border: 2px dashed #2986e2;
+  border-radius: 10px;
+  padding: 30px;
+  text-align: center;
+  background: #f8f9fa;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.file-upload-area:hover {
+  border-color: #6dd5fa;
+  background: #f0f7ff;
+}
+
+.file-upload-area i {
+  font-size: 48px;
+  color: #2986e2;
+  margin-bottom: 15px;
+}
+
+.file-upload-area p {
+  color: #666;
+  margin: 10px 0;
+}
+
+.file-input {
+  display: none;
+}
+
+.file-select-btn {
+  background: linear-gradient(90deg, #2986e2 0%, #6dd5fa 100%);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.file-select-btn:hover {
+  background: linear-gradient(90deg, #2574a9 0%, #48c6ef 100%);
+  transform: translateY(-2px);
+}
+
+/* Dosya Bilgisi Stilleri */
+.file-details {
+  display: block;
+  margin-bottom: 12px;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #f0f7ff;
+  border: 1px solid #2986e2;
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.file-name {
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+.file-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Buton stilleri */
+.file-button {
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+  font-size: 12px;
+}
+
+.file-button.download {
+  background-color: #2986e2;
+  color: white;
+}
+
+.file-button.download:hover {
+  background-color: #2476cc;
+}
+
+.file-button.delete {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+}
+
+.file-button.delete:hover {
+  background-color: #c82333;
+}
+
+.file-button i {
+  color: white;
+}
+
+.header-btn {
+  background-color: rgb(174, 200, 227) !important;
+  border: none !important;
+  padding: 8px 18px !important;
+  border-radius: 7px !important;
+  cursor: pointer !important;
+  font-weight: bold !important;
+  font-size: 1.05rem !important;
+  margin: 0 8px !important;
+  min-width: 120px !important;
+  transition: background 0.2s !important;
+  box-shadow: none !important;
+  color: #222 !important;
+  display: inline-block !important;
+  height: 44px !important;
+  line-height: 1.2 !important;
+}
+.header-btn:hover {
+  background-color: rgb(138, 171, 228) !important;
+}
+
+.export-btn {
+  background: #357ec7;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  padding: 8px 16px;
+  font-weight: bold;
+  font-size: 1rem;
+  margin: 0 8px;
+  min-width: 120px;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+/* Dosya Yükleme Alanı Stilleri */
+.file-upload-container {
+  padding: 20px;
+}
+
+.file-upload-area {
+  border: 2px dashed #2986e2;
+  border-radius: 10px;
+  padding: 30px;
+  text-align: center;
+  background: #f8f9fa;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.file-upload-area:hover {
+  border-color: #6dd5fa;
+  background: #f0f7ff;
+}
+
+.file-upload-area i {
+  font-size: 48px;
+  color: #2986e2;
+  margin-bottom: 15px;
+}
+
+.file-upload-area p {
+  color: #666;
+  margin: 10px 0;
+}
+
+.file-input {
+  display: none;
+}
+
+.file-select-btn {
+  background: linear-gradient(90deg, #2986e2 0%, #6dd5fa 100%);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.file-select-btn:hover {
+  background: linear-gradient(90deg, #2574a9 0%, #48c6ef 100%);
+  transform: translateY(-2px);
+}
+
+/* Dosya Bilgisi Stilleri */
+.file-info {
+  margin-top: 20px;
+  padding: 3px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.file-details {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.file-details i {
+  font-size: 24px;
+  color: #d5d5d5;
+}
+
+.file-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.file-actions button {
+  padding: 8px 15px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.3s ease;
+}
+
+.file-actions button:hover {
+  transform: translateY(-2px);
+}
+.export-btn:hover {
+  background: #3b5ba9;
+}
+.export-btn i {
+  font-size: 1.1em;
+}
+
+#userTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+#userTable th,
+#userTable td {
+  padding: 10px;
+  border: 1px solid #aebeb8;
+  text-align: center;
+}
+#userTable th {
+  background-color: #5e7cd3;
+  color: #fff;
+}
+/* Dosya Yükleme Alanı Stilleri */
+.file-upload-container {
+  padding: 20px;
+}
+
+.file-upload-area {
+  border: 2px dashed #2986e2;
+  border-radius: 10px;
+  padding: 30px;
+  text-align: center;
+  background: #f8f9fa;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.file-upload-area:hover {
+  border-color: #6dd5fa;
+  background: #f0f7ff;
+}
+
+.file-upload-area i {
+  font-size: 48px;
+  color: #2986e2;
+  margin-bottom: 15px;
+}
+
+.file-upload-area p {
+  color: #666;
+  margin: 10px 0;
+}
+
+.file-input {
+  display: none;
+}
+
+.file-select-btn {
+  background: linear-gradient(90deg, #2986e2 0%, #6dd5fa 100%);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.file-select-btn:hover {
+  background: linear-gradient(90deg, #2574a9 0%, #48c6ef 100%);
+  transform: translateY(-2px);
+}
+
+/* Dosya Bilgisi Stilleri */
+.file-info {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.file-details {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.file-details i {
+  font-size: 24px;
+  color: #2986e2;
+}
+
+.file-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.file-actions button {
+  padding: 8px 15px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.3s ease;
+}
+
+.file-actions button:hover {
+  transform: translateY(-2px);
+}
+.star {
+  font-size: 24px;
+  min-width: 24px;
+  text-align: center;
+}
+
+/* Not düzenleme butonları */
+.note-edit-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: flex-end;
+}
+
+.note-edit-actions button.save-btn {
+  padding: 4px 6px;
+  background-color: #2986e2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(41, 134, 226, 0.2);
+}
+
+.note-edit-actions button.cancel-btn {
+  padding: 4px 6px;
+  background-color: #ffffff;
+  color: #dc3545;
+  border: 1px solid #dc3545;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.note-edit-actions button.save-btn:hover {
+  background-color: #2476cc;
+}
+
+.note-edit-actions button.cancel-btn:hover {
+  background-color: #dc3545;
+  color: #ffffff;
+  border-color: #dc3545;
+}
+
+.note-edit-actions button.cancel-btn:hover i,
+.note-edit-actions button.cancel-btn:hover span {
+  color: #ffffff;
+}
+
+.note-edit-actions button i {
+  font-size: 14px;
+}
+
+.edit-note-textarea {
+  width: 100%;
+  margin-bottom: 10px;
+  border: 1px solid #2986e2;
+  border-radius: 6px;
+  padding: 10px;
+}
+
+.edit-note-textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(41, 134, 226, 0.25);
+}
+
+/* İndir butonundaki ikon için stil */
+.file-button.download i {
+  color: white; /* İndir butonundaki ikon beyaz */
+}
+
+/* Sil butonundaki ikon için stil */
+.file-button.delete i {
+  color: white; /* Sil butonundaki ikon beyaz */
+}
+
+/* Dosya detayları için stil */
+.file-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px; /* Alt boşluğu azalt */
+  padding: 6px; /* İç boşluğu azalt */
+  border-radius: 6px; /* Kenar yuvarlama */
+  background-color: #f0f7ff;
+  border: 1px solid #2986e2;
+  font-size: 14px; /* Yazı boyutunu küçült */
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: 4px; /* Boşluğu azalt */
+}
+
+.file-name {
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+.file-actions {
+  display: flex;
+  gap: 8px; /* Boşluğu azalt */
+}
+
+/* Buton stilleri */
+.file-button {
+  padding: 4px 8px; /* Buton boyutunu küçült */
+  border: none;
+  border-radius: 4px; /* Kenar yuvarlama */
+  display: flex;
+  align-items: center;
+  gap: 4px; /* Boşluğu azalt */
+  transition: all 0.2s ease;
+  font-size: 12px; /* Buton yazı boyutunu küçült */
+}
+
+.file-button.download {
+  background-color: #2986e2;
+  color: white; /* Yazı rengi beyaz */
+}
+
+.file-button.download:hover {
+  background-color: #2476cc;
+}
+
+.file-button.delete {
+  background-color: #dc3545; /* Kırmızı arka plan */
+  color: white; /* Beyaz yazı rengi */
+  border: none; /* Kenar yok */
+}
+
+.file-button.delete:hover {
+  background-color: #c82333; /* Koyu kırmızı hover efekti */
+}
+
+/* Aktif durum stili */
+th.active {
+  background-color: #007bff; /* Mavi arka plan */
+  color: white; /* Beyaz yazı rengi */
+}
+
+/* Buton hover durumu */
+th:hover {
+  cursor: pointer; /* İmleci tıklanabilir hale getir */
+  background-color: #0056b3; /* Daha koyu bir mavi */
+  color: white; /* Yazı rengini beyaz yap */
+}
+
+/* Buton aktif durumu (tıklandığında) */
+th:active {
+  background-color: #004494; /* Daha koyu bir mavi */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Gölge ekleyin */
 }

@@ -10,39 +10,176 @@
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     />
-
-    <style></style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://raw.githubusercontent.com/evidenceprime/html-docx-js/master/dist/html-docx.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <style>
+      .export-modal-dialog {
+        max-width: 420px;
+        width: 100%;
+      }
+      .file-info {
+        display: block;
+        margin-top: 20px;
+      }
+      .file-details {
+        display: block;
+        margin-bottom: 12px;
+        padding: 10px;
+        border-radius: 8px;
+        background-color: #f0f7ff;
+        border: 1px solid #2986e2;
+      }
+    </style>
   </head>
   <body>
-    <h1>Kullanıcı Bilgileri</h1>
-    <input
-      type="text"
-      id="searchInput"
-      placeholder="Ara : Ad,Email,Şehir..."
+    <h1 class="gradient-text" style="margin-bottom: 32px">FİRMA BİLGİLERİ</h1>
+    <div
       style="
-        margin-bottom: 15px;
-        padding: 5px;
-        width: 300px;
-        border-radius: 5px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
       "
-    />
+    >
+      <div style="flex: 1"></div>
+      <div style="flex: 1; display: flex; justify-content: center">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Ara : Ad,Email,Şehir..."
+          style="padding: 8px; width: 500px; border-radius: 5px"
+        />
+      </div>
+      <div
+        style="
+          flex: 1;
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          gap: 10px;
+        "
+      >
+        <button id="kisiekle">➕ Firma Ekle</button>
+        <button id="exportPdfBtn" class="export-btn">
+          <i class="fas fa-file-pdf"></i> PDF'e Aktar
+        </button>
+        <button id="exportExcelBtn" class="export-btn">
+          <i class="fas fa-file-excel"></i> Excel'e Aktar
+        </button>
+        <button id="favoriToggleBtn">Favorileri Göster ⭐</button>
+      </div>
+    </div>
 
     <div class="container mt-4"></div>
 
+    <!-- Firma Ekle Modalı -->
+    <div
+      class="modal fade"
+      id="addCompanyModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="addCompanyModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addCompanyModalLabel">
+              Yeni Firma Ekle
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Kapat"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="addCompanyForm">
+              <div class="form-group">
+                <label>Firma Adı</label>
+                <input
+                  type="text"
+                  id="newCompany"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label>Web Sitesi</label>
+                <input type="text" id="newWebsite" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label>İletişim (Telefon No)</label>
+                <input type="text" id="newPhone" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label>E-posta</label>
+                <input
+                  type="email"
+                  id="newEmail"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label>Şehir</label>
+                <input type="text" id="newCity" class="form-control" required />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Kapat
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="saveNewCompanyBtn"
+            >
+              Kaydet
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     <table id="userTable">
       <thead>
         <tr>
-          <th>Ad</th>
-          <th>Kullanıcı Adı</th>
-          <th>Email</th>
-          <th>Şehir</th>
-          <th>Şirket</th>
-          <th>Aksiyonlar</th>
+          <th>Firma Adı</th>
+          <th>Web Sitesi</th>
+          <th>İletişim</th>
+          <th>E-posta</th>
+          <th onclick="sortCities()" id="cityHeader">
+            Şehir <span id="citySortArrow">⬇️</span>
+          </th>
+          <th style="text-align: center">İşlemler</th>
         </tr>
       </thead>
       <tbody></tbody>
     </table>
-    <div id="pagination" class="pagination-container"></div>
+    <div
+      id="pagination"
+      class="pagination-container d-flex justify-content-between"
+    >
+      <div class="pagination-left">
+        <button id="prevBtn">Önceki</button>
+      </div>
+      <div class="pagination-right">
+        <button id="nextBtn">Sonraki</button>
+      </div>
+    </div>
 
     <div
       class="modal fade"
@@ -52,11 +189,11 @@
       aria-labelledby="editUserModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="editUserModalLabel">
-              Kullanıcıyı Düzenle
+              Bilgileri Düzenle
             </h5>
             <button
               type="button"
@@ -70,24 +207,24 @@
           <div class="modal-body">
             <form id="editUserForm">
               <div class="form-group">
-                <label>Ad</label>
-                <input type="text" id="name" class="form-control" />
+                <label>Firma Adı</label>
+                <input type="text" id="company" class="form-control" />
               </div>
               <div class="form-group">
-                <label>Kullanıcı Adı</label>
-                <input type="text" id="username" class="form-control" />
+                <label>Web Sitesi</label>
+                <input type="text" id="website" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label>İletişim</label>
+                <input type="email" id="phone" class="form-control" />
               </div>
               <div class="form-group">
                 <label>E-posta</label>
-                <input type="email" id="email" class="form-control" />
+                <input type="text" id="email" class="form-control" />
               </div>
               <div class="form-group">
                 <label>Şehir</label>
                 <input type="text" id="city" class="form-control" />
-              </div>
-              <div class="form-group">
-                <label>Şirket</label>
-                <input type="text" id="company" class="form-control" />
               </div>
             </form>
           </div>
@@ -107,11 +244,211 @@
       </div>
     </div>
 
+    <!-- Not Ekle Modalı -->
+
+    <!-- Notlar Modalı -->
+    <div
+      class="modal fade"
+      id="noteModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="noteModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="noteModalLabel">Notlar</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Kapat"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="allNotesArea"></div>
+            <button class="add-note-btn" onclick="showNoteInput()">
+              Yeni Bir Not Yaz
+            </button>
+            <div id="noteInputArea" style="display: none">
+              <textarea
+                id="noteText"
+                class="form-control"
+                rows="3"
+                placeholder="Notunuzu yazın..."
+              ></textarea>
+              <div
+                style="
+                  display: flex;
+                  justify-content: flex-end;
+                  margin-top: 10px;
+                  gap: 8px;
+                "
+              >
+                <button
+                  class="btn btn-secondary"
+                  style="margin-right: 5px"
+                  onclick="hideNoteInput()"
+                >
+                  İptal
+                </button>
+                <button class="btn btn-success" onclick="saveNote()">
+                  Kaydet
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Kapat
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dosya Seç Modalı -->
+    <div
+      class="modal fade"
+      id="fileModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="fileModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="fileModalLabel">Dosya Yükle</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Kapat"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="file-upload-container">
+              <div class="file-upload-area" id="dropZone">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>Dosyayı buraya sürükleyin veya seçin</p>
+                <input type="file" id="fileInput" class="file-input" multiple />
+                <button class="file-select-btn">Dosya Seç</button>
+              </div>
+              <div id="fileList" class="file-info" style="margin-top: 20px">
+                <div class="file-details">
+                  <span>Ekran_Goruntusu_2025-05-15.png</span>
+                  <button class="btn">İndir</button>
+                  <button class="btn">Sil</button>
+                </div>
+                <div class="file-details">
+                  <span>Ekran_Goruntusu_2025-05-16.png</span>
+                  <button class="btn">İndir</button>
+                  <button class="btn">Sil</button>
+                </div>
+                <!-- Daha fazla dosya ekleyebilirsiniz -->
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Kapat
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- BODY'nin sonuna: Bootstrap JS ve jQuery (sıralama önemli!) -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="app.js"></script>
+
+    <!-- <script src="FileSaver.min.js"></script>
+<script src="html-docx.js"></script> -->
+
+    <!-- jsPDF ve autoTable CDN -->
   </body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.7.0/jspdf.plugin.autotable.min.js"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- SheetJS (XLSX) kütüphanesi -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+  <!-- html-docx-js kütüphanesi -->
+  <script src="https://unpkg.com/html-docx-js/dist/html-docx.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <script>
+    function editNote(idx, noteText) {
+      const noteContent = document.getElementById(`note-content-${idx}`);
+      const originalText = noteText;
+
+      // Not içeriğini düzenlenebilir textarea ile değiştir
+      noteContent.innerHTML = `
+        <textarea class="form-control edit-note-textarea">${originalText}</textarea>
+        <div class="note-edit-actions">
+          <button class="cancel-btn" onclick="cancelEdit(${idx}, '${originalText}')">
+            <i class="fas fa-times"></i>
+            <span>İptal</span>
+          </button>
+          <button class="save-btn" onclick="saveEditedNote(${idx})">
+            <i class="fas fa-save"></i>
+            <span>Kaydet</span>
+          </button>
+        </div>
+      `;
+    }
+
+    function saveEditedNote(idx) {
+      const notes = JSON.parse(localStorage.getItem("notes")) || [];
+      const noteTextarea = document.querySelector(
+        `#note-content-${idx} textarea`
+      );
+      const newText = noteTextarea.value;
+
+      // Notu güncelle
+      const noteIndex = notes.findIndex((n) => n.id === currentUserId);
+      if (noteIndex !== -1) {
+        notes[noteIndex].note = newText;
+        notes[noteIndex].timestamp = new Date().toLocaleString("tr-TR", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+
+        localStorage.setItem("notes", JSON.stringify(notes));
+
+        // Başarılı alert göster
+        Swal.fire({
+          icon: "success",
+          title: "Başarılı!",
+          text: "Not başarıyla güncellendi.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+
+      renderNotes();
+    }
+  </script>
 </html>
